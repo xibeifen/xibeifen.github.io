@@ -17,6 +17,7 @@
 <p>sw.start(“开始任务”);<br>sw.stop();</p>
 <p>System.out.println(sw.prettyPrint());<br>System.out.println(sw.getTotalTimeMillis());<br>System.out.println(sw.getLastTaskName());<br>System.out.println(sw.getLastTaskInfo());<br>System.out.println(sw.getTaskCount());</p>
 <p>System.out.println(sw.prettyPrint());<br>&#x2F;&#x2F;总时间 ms<br>System.out.println(sw.getTotalTimeMillis());<br>&#x2F;&#x2F;最后一个 任务名称<br>System.out.println(sw.getLastTaskName());<br>&#x2F;&#x2F;最后一个 任务信息<br>System.out.println(sw.getLastTaskInfo());<br>&#x2F;&#x2F;任务总数<br>System.out.println(sw.getTaskCount());</p>
+<p><img src="https://raw.githubusercontent.com/xibeifen/blogImage/main/images/image-20221014154801729.png" alt="image-20221014154801729"></p>
 ]]></content>
       <categories>
         <category>工具类</category>
