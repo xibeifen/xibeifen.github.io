@@ -27,16 +27,16 @@
 <meta property="og:site_name" content="西北风炖豆腐的博客">
 <meta property="og:description" content="SSE实际应用代码，提供了SSE通用的工具类，然后在controller或service中直接调用即可。注意，如果用nginx代理了SSE的接口，需要对location属性进行一定的配置，否则会出现SSE消息推送缓慢、卡顿的问题。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="d:\Private\SoftworeFile\Typora_picture\image-20241120145107518.png">
-<meta property="og:image" content="d:\Private\SoftworeFile\Typora_picture\image-20241120145912725.png">
-<meta property="og:image" content="d:\Private\SoftworeFile\Typora_picture\image-20241120145941667.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xibeifen/blogImage@main/img/image-20241120145107518.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xibeifen/blogImage@main/img/image-20241120145912725.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xibeifen/blogImage@main/img/image-20241120145941667.png">
 <meta property="article:published_time" content="2024-11-21T08:10:52.000Z">
 <meta property="article:modified_time" content="2024-11-21T08:10:52.000Z">
 <meta property="article:author" content="西北风炖豆腐">
 <meta property="article:tag" content="Nginx">
 <meta property="article:tag" content="服务器消息推送">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="d:\Private\SoftworeFile\Typora_picture\image-20241120145107518.png">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/xibeifen/blogImage@main/img/image-20241120145107518.png">
 
 <link rel="canonical" href="http://example.com/2024/11/21/SSE%E6%8A%80%E6%9C%AF/">
 
@@ -222,15 +222,15 @@
 <h3 id="3、postman测试"><a href="#3、postman测试" class="headerlink" title="3、postman测试"></a>3、postman测试</h3><ul>
 <li>第一个接口用于创建连接：</li>
 </ul>
-<p><img src="D:\Private\SoftworeFile\Typora_picture\image-20241120145107518.png" alt="image-20241120145107518"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/xibeifen/blogImage@main/img/image-20241120145107518.png" alt="image-20241120145107518"></p>
 <ul>
 <li>第二个接口调用群发消息的方法：</li>
 </ul>
-<p><img src="D:\Private\SoftworeFile\Typora_picture\image-20241120145912725.png" alt="image-20241120145912725"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/xibeifen/blogImage@main/img/image-20241120145912725.png" alt="image-20241120145912725"></p>
 <ul>
 <li>查看第一个接口，SSE收到消息：</li>
 </ul>
-<p><img src="D:\Private\SoftworeFile\Typora_picture\image-20241120145941667.png" alt="image-20241120145941667"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/xibeifen/blogImage@main/img/image-20241120145941667.png" alt="image-20241120145941667"></p>
 <h3 id="4、前端代码"><a href="#4、前端代码" class="headerlink" title="4、前端代码"></a>4、前端代码</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">    var sseSource = new EventSource(&quot;http://localhost:8080/sse/create&quot;);</span><br><span class="line">    sseSource.onmessage = function(event)&#123;</span><br><span class="line">        console.log(&quot;test=&gt;&quot;,event)</span><br><span class="line">    &#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
 
 <h3 id="5、Nginx配置"><a href="#5、Nginx配置" class="headerlink" title="5、Nginx配置"></a>5、Nginx配置</h3><p>如果后端接口由Nginx代理，那么需要进行特定的配置；</p>
