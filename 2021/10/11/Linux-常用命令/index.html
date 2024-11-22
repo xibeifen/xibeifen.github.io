@@ -217,11 +217,24 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="端口开放："><a href="#端口开放：" class="headerlink" title="端口开放："></a>端口开放：</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看所有开放的端口：</span></span><br><span class="line">firewall-cmd --zone=public --list-ports</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看想开的端口是否已开</span></span><br><span class="line">firewall-cmd --query-port=22/tcp</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">添加指定需要开放的端口</span></span><br><span class="line">firewall-cmd --add-port=22/tcp --permanent</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">重载添加的端口</span></span><br><span class="line">firewall-cmd --reload</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">移除指定端口</span></span><br><span class="line">firewall-cmd --permanent --remove-port=22/tcp</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">示例：开放8080端口</span></span><br><span class="line">firewall-cmd --query-port=8080/tcp               # 首先查看端口是否已经开放</span><br><span class="line">firewall-cmd --add-port=8080/tcp --permanent     # 开放端口</span><br><span class="line">firewall-cmd --reload                            # 重载</span><br></pre></td></tr></table></figure>
+        <h2 id="端口开放："><a href="#端口开放：" class="headerlink" title="端口开放："></a>端口开放：</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看所有开放的端口：</span></span><br><span class="line">firewall-cmd --zone=public --list-ports</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看想开的端口是否已开</span></span><br><span class="line">firewall-cmd --query-port=22/tcp</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">添加指定需要开放的端口</span></span><br><span class="line">firewall-cmd --add-port=22/tcp --permanent</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">重载添加的端口</span></span><br><span class="line">firewall-cmd --reload</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">移除指定端口</span></span><br><span class="line">firewall-cmd --permanent --remove-port=22/tcp</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">示例：开放8080端口</span></span><br><span class="line">firewall-cmd --query-port=8080/tcp               # 首先查看端口是否已经开放</span><br><span class="line">firewall-cmd --add-port=8080/tcp --permanent     # 开放端口</span><br><span class="line">firewall-cmd --reload                            # 重载</span><br></pre></td></tr></table></figure>
 
-<h3 id="防火墙："><a href="#防火墙：" class="headerlink" title="防火墙："></a>防火墙：</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看防火墙状态</span></span><br><span class="line">systemctl status firewalld</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">开启防火墙</span></span><br><span class="line">systemctl start firewalld</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">开启防火墙</span></span><br><span class="line">service firewalld start</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">关闭防火墙</span></span><br><span class="line">systemctl stop firewalld</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">若遇到无法开启</span></span><br><span class="line">systemctl unmask firewalld.service</span><br><span class="line">systemctl start firewalld.service</span><br></pre></td></tr></table></figure>
+<h2 id="防火墙："><a href="#防火墙：" class="headerlink" title="防火墙："></a>防火墙：</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看防火墙状态</span></span><br><span class="line">systemctl status firewalld</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">开启防火墙</span></span><br><span class="line">systemctl start firewalld</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">开启防火墙</span></span><br><span class="line">service firewalld start</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">关闭防火墙</span></span><br><span class="line">systemctl stop firewalld</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">若遇到无法开启</span></span><br><span class="line">systemctl unmask firewalld.service</span><br><span class="line">systemctl start firewalld.service</span><br></pre></td></tr></table></figure>
 
-<h3 id="vim文本编辑："><a href="#vim文本编辑：" class="headerlink" title="vim文本编辑："></a>vim文本编辑：</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">搜索未注释和不空的行：</span></span><br><span class="line">grep -Ev &quot;^#|^$&quot; xxx.conf</span><br></pre></td></tr></table></figure>
+<h2 id="vim文本编辑："><a href="#vim文本编辑：" class="headerlink" title="vim文本编辑："></a>vim文本编辑：</h2><p>vim 共分为三种模式，<strong>命令模式、输入模式和底线命令行模式</strong>。</p>
+<h3 id="命令模式"><a href="#命令模式" class="headerlink" title="命令模式"></a>命令模式</h3><p>提供一些基本的命令，更多的命令需要使用底线命令行模式。</p>
+<p><strong>刚进入vim时，就是命令模式。</strong></p>
+<ul>
+<li><p>从输入模式切换到命令模式：按ESC就可以从输入模式跳转为命令模式。</p>
+</li>
+<li><p>从底线命令行模式切换到命令模式：删除你输入的命令和冒号，再按ESC。</p>
+</li>
+<li><p><strong>i</strong> – 切换到输入模式，在光标当前位置开始输入文本。</p>
+</li>
+<li><p><strong>:</strong> – 切换到底线命令行模式，以在最底一行输入命令。</p>
+</li>
+</ul>
+<h3 id="输入模式"><a href="#输入模式" class="headerlink" title="输入模式"></a>输入模式</h3><h3 id="底线命令行模式"><a href="#底线命令行模式" class="headerlink" title="底线命令行模式"></a>底线命令行模式</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">搜索未注释和不空的行：</span></span><br><span class="line">grep -Ev &quot;^#|^$&quot; xxx.conf</span><br></pre></td></tr></table></figure>
 
 
     </div>
@@ -241,8 +254,8 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/10/10/%E4%BB%A3%E7%A0%81%E8%80%97%E6%97%B6%E7%BB%9F%E8%AE%A1/" rel="prev" title="代码耗时统计">
-      <i class="fa fa-chevron-left"></i> 代码耗时统计
+    <a href="/2021/10/11/Nginx-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" rel="prev" title="Nginx-常用命令">
+      <i class="fa fa-chevron-left"></i> Nginx-常用命令
     </a></div>
       <div class="post-nav-item">
     <a href="/2022/03/10/Java8%E4%B8%ADstream%E6%B5%81%E7%94%A8%E6%B3%95/" rel="next" title="Java8中stream流用法">
@@ -306,7 +319,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3%E5%BC%80%E6%94%BE%EF%BC%9A"><span class="nav-text">端口开放：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%98%B2%E7%81%AB%E5%A2%99%EF%BC%9A"><span class="nav-text">防火墙：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vim%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%EF%BC%9A"><span class="nav-text">vim文本编辑：</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AB%AF%E5%8F%A3%E5%BC%80%E6%94%BE%EF%BC%9A"><span class="nav-text">端口开放：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%98%B2%E7%81%AB%E5%A2%99%EF%BC%9A"><span class="nav-text">防火墙：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vim%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%EF%BC%9A"><span class="nav-text">vim文本编辑：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F"><span class="nav-text">命令模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BE%93%E5%85%A5%E6%A8%A1%E5%BC%8F"><span class="nav-text">输入模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%95%E7%BA%BF%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%A8%A1%E5%BC%8F"><span class="nav-text">底线命令行模式</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -321,20 +334,20 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-count">8</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

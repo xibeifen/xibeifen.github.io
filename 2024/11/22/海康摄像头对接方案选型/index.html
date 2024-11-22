@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="公司一个项目，业务涉及硬件，设备A传递电信号给海康摄像头，海康摄像头接收报警输入以后，控制录像，并将录像视频传递到服务器上，我们开发的系统是web应用，最终需要在web上播放该视频。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="海康摄像头对接方案选型">
+<meta property="og:url" content="http://example.com/2024/11/22/%E6%B5%B7%E5%BA%B7%E6%91%84%E5%83%8F%E5%A4%B4%E5%AF%B9%E6%8E%A5%E6%96%B9%E6%A1%88%E9%80%89%E5%9E%8B/index.html">
+<meta property="og:site_name" content="西北风炖豆腐的博客">
+<meta property="og:description" content="公司一个项目，业务涉及硬件，设备A传递电信号给海康摄像头，海康摄像头接收报警输入以后，控制录像，并将录像视频传递到服务器上，我们开发的系统是web应用，最终需要在web上播放该视频。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xibeifen/blogImage@main/img/image-20241122161803470.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xibeifen/blogImage@main/img/image-20241122163156684.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xibeifen/blogImage@main/img/image-20241122164541316.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xibeifen/blogImage@main/img/image-20241122171233614.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/xibeifen/blogImage@main/img/2aed994e3679597c2650a6e74ac8c28.png">
+<meta property="og:image" content="d:\Private\SoftworeFile\Typora_picture\image-20241122170441747.png">
+<meta property="article:published_time" content="2024-11-22T04:01:08.000Z">
+<meta property="article:modified_time" content="2024-11-22T04:01:08.000Z">
+<meta property="article:author" content="西北风炖豆腐">
+<meta property="article:tag" content="海康">
+<meta property="article:tag" content="摄像头">
+<meta property="article:tag" content="视频监控">
+<meta property="article:tag" content="流媒体服务">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/xibeifen/blogImage@main/img/image-20241122161803470.png">
+
+<link rel="canonical" href="http://example.com/2024/11/22/%E6%B5%B7%E5%BA%B7%E6%91%84%E5%83%8F%E5%A4%B4%E5%AF%B9%E6%8E%A5%E6%96%B9%E6%A1%88%E9%80%89%E5%9E%8B/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>海康摄像头对接方案选型 | 西北风炖豆腐的博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">西北风炖豆腐的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/11/22/%E6%B5%B7%E5%BA%B7%E6%91%84%E5%83%8F%E5%A4%B4%E5%AF%B9%E6%8E%A5%E6%96%B9%E6%A1%88%E9%80%89%E5%9E%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="西北风炖豆腐">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="西北风炖豆腐的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          海康摄像头对接方案选型
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-11-22 12:01:08" itemprop="dateCreated datePublished" datetime="2024-11-22T12:01:08+08:00">2024-11-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B5%B7%E5%BA%B7/" itemprop="url" rel="index"><span itemprop="name">海康</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>公司一个项目，业务涉及硬件，设备A传递电信号给海康摄像头，海康摄像头接收报警输入以后，控制录像，并将录像视频传递到服务器上，我们开发的系统是web应用，最终需要在web上播放该视频。</p>
+<span id="more"></span>
+
+<p><strong>海康开放平台：</strong></p>
+<p><a target="_blank" rel="noopener" href="https://open.hikvision.com/">https://open.hikvision.com/</a></p>
+<h3 id="方案一：ISUP协议"><a href="#方案一：ISUP协议" class="headerlink" title="方案一：ISUP协议"></a>方案一：ISUP协议</h3><p>首先一种方案是使用ISUP-SDK，海康的ISUP协议解决了摄像头没有固定IP的问题；但是你下载下来，示例基本都是C++的，对于我们开发WEB应用的JAVA工程师来说，简直一头雾水；虽然现在海康也提供了JAVA示例，但是你要是从零开始，让WEB应用直接和硬件层对接，难度还是太大，学习成本很高。</p>
+<p>优点：</p>
+<ul>
+<li>会C++可以尝试一下，SDK免费的；</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>对于JAVA开发来说难度大，研究起来耗时很长；</li>
+<li>沟通海康客服，要定制化就要花钱（具体没问多少，定制化肯定花钱不少，而且定制化也要花一定的时间）；</li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/xibeifen/blogImage@main/img/image-20241122161803470.png" alt="image-20241122161803470"></p>
+<h3 id="方案二：萤石云平台"><a href="#方案二：萤石云平台" class="headerlink" title="方案二：萤石云平台"></a>方案二：萤石云平台</h3><p>优点</p>
+<ul>
+<li><p>ISUP协议是硬件层，我们的WEB应用是软件层，硬件层和软件层交互，要处理事情很多；萤石云平台属于软件应用层，它可以直接给我们开放接口，我们应用直接调用现成的接口就容易多了；</p>
+</li>
+<li><p>有专门接口文档，入参出参很清晰；能对接海康、大华多种品牌；</p>
+</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li><p>甲方公司不建议使用第三方平台；</p>
+</li>
+<li><p>每个月几百块的费用，一些服务还要另外收费；</p>
+</li>
+<li><p>海康客服提示，通过萤石云只能进行视频预览、回放，获取不到IO报警信号及报警录像；因此，尚不能满足我们的业务需求。</p>
+</li>
+</ul>
+<h3 id="方案三：综合安防管理平台"><a href="#方案三：综合安防管理平台" class="headerlink" title="方案三：综合安防管理平台"></a>方案三：综合安防管理平台</h3><p><img src="https://cdn.jsdelivr.net/gh/xibeifen/blogImage@main/img/image-20241122163156684.png" alt="image-20241122163156684"></p>
+<p>综合安防平台是独立部署的，可以安装需要的模块在自己的服务器上，你也可以花钱对它进行定制化，因此不算第三方平台；另一方面，它是一次性付费几千元，需求稳定的话，一次支付可以永久使用。它的功能也满足我们的需求，点击“场景方案”，可以看到，我们需要用的主要是两个，一个是事件订阅，一个是回放取流。</p>
+<ul>
+<li>价格在预算之内，并且一次性收费；</li>
+<li>独立部署；</li>
+<li>后续要升级修改功能，也可以定制化，有一定的扩展性；</li>
+<li>官方文档还算清晰，结合咨询海康的技术和客服人员，大部分问题就可以解决；</li>
+</ul>
+<p><strong>具体步骤大致如下</strong></p>
+<p>1、开发时，我们没有设备A，可以用一根铜线短接摄像头报警接口，以此来模拟报警输入信号；注意是IN和G，接头上有标记。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/xibeifen/blogImage@main/img/image-20241122164541316.png" alt="image-20241122164541316"></p>
+<p>2、摄像头配置不做描述，假设这里摄像头已经运行了。那么我们进入配置页面，在“事件“中选择报警输入，配置录像，并在录像中选择录制时长。这是，一旦短接模拟报警输入以后，就会自动录制一段视频。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/xibeifen/blogImage@main/img/image-20241122171233614.png" alt="image-20241122171233614"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/xibeifen/blogImage@main/img/2aed994e3679597c2650a6e74ac8c28.png" alt="2aed994e3679597c2650a6e74ac8c28"></p>
+<p>3、采购综合安防平台，然后让海康技术配置好，剩下就是我们的事了；用到的第一个接口是“事件服务接口”-“按事件类型订阅事件”，这个接口我是配置在应用启动时，自动触发，它会给综合安防管理平台发送一个接口地址，当事件触发时，会安防平台会调用这个接口地址，传输相关的报文信息。当然，这个接口地址就是我们WEB应用对我开放的一个接口，你需要事先按文档规范编写好。</p>
+<p>这里用到两个接口，接口1由安防平台提供，你可以在“开发指南”中找到：</p>
+<p><img src="D:\Private\SoftworeFile\Typora_picture\image-20241122170441747.png" alt="image-20241122170441747"></p>
+<p>接口2由你自己编写，是事件触发后回调的地址，接收到报文后，处理自己的业务；我这里是接收报警输入的时间，然后调用“回放取流”接口，取出mp4格式的视频文件并存放到服务器上。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * contorller接口</span></span><br><span class="line"><span class="comment"> * 报警事件触发时，请求的接口：</span></span><br><span class="line"><span class="comment"> * 接收报警时间、设备ID等报文数据</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> data 报文</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> 结果</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@RequestMapping(value = &quot;/receiveData&quot;, method = RequestMethod.POST, consumes = &quot;application/json&quot;)</span></span><br><span class="line"><span class="keyword">public</span> String <span class="title function_">receiveData</span><span class="params">(<span class="meta">@RequestBody</span> String data)</span> &#123;</span><br><span class="line">    <span class="comment">//异步执行接收报文</span></span><br><span class="line">    cameraService.receiveData(data);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//返回消息</span></span><br><span class="line">    <span class="type">JSONObject</span> <span class="variable">jsonBody</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">JSONObject</span>();</span><br><span class="line">    jsonBody.put(<span class="string">&quot;code&quot;</span>, <span class="string">&quot;0&quot;</span>);</span><br><span class="line">    jsonBody.put(<span class="string">&quot;msg&quot;</span>, <span class="string">&quot;success&quot;</span>);</span><br><span class="line">    jsonBody.put(<span class="string">&quot;data&quot;</span>, <span class="literal">null</span>);</span><br><span class="line">    <span class="keyword">return</span> jsonBody.toJSONString();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * service业务处理</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Async</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">receiveData</span><span class="params">(String data)</span> &#123;</span><br><span class="line">    log.info(<span class="string">&quot;收到预警事件报文：&#123;&#125;&quot;</span>, data);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (StrUtil.isBlank(data)) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">CustomException</span>(<span class="string">&quot;预警事件报文为空&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//1、这里可以用Hutool工具类解析报文</span></span><br><span class="line">    <span class="type">JSONObject</span> <span class="variable">jsonObject</span> <span class="operator">=</span> JSONUtil.parseObj(data);</span><br><span class="line">    <span class="comment">//Params字段</span></span><br><span class="line">    <span class="type">JSONObject</span> <span class="variable">paramsJson</span> <span class="operator">=</span> jsonObject.getJSONObject(<span class="string">&quot;params&quot;</span>);</span><br><span class="line">    <span class="comment">//Events字段</span></span><br><span class="line">    <span class="type">JSONArray</span> <span class="variable">eventsJson</span> <span class="operator">=</span> paramsJson.getJSONArray(<span class="string">&quot;events&quot;</span>);</span><br><span class="line">    <span class="comment">//第一个事件</span></span><br><span class="line">    <span class="type">JSONObject</span> <span class="variable">eventJson</span> <span class="operator">=</span> eventsJson.getJSONObject(<span class="number">0</span>);</span><br><span class="line">    <span class="comment">//status字段</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">status</span> <span class="operator">=</span> eventJson.getInt(<span class="string">&quot;status&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (status == <span class="number">1</span>) &#123;</span><br><span class="line">        <span class="comment">//2、预警开始，新增预警信息</span></span><br><span class="line"></span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (status == <span class="number">2</span>) &#123;</span><br><span class="line">        <span class="comment">//3、预警结束，回放取流，下载视频</span></span><br><span class="line"></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">CustomException</span>(<span class="string">&quot;预警事件状态异常&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B5%B7%E5%BA%B7/" rel="tag"># 海康</a>
+              <a href="/tags/%E6%91%84%E5%83%8F%E5%A4%B4/" rel="tag"># 摄像头</a>
+              <a href="/tags/%E8%A7%86%E9%A2%91%E7%9B%91%E6%8E%A7/" rel="tag"># 视频监控</a>
+              <a href="/tags/%E6%B5%81%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1/" rel="tag"># 流媒体服务</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/11/21/SSE%E6%8A%80%E6%9C%AF/" rel="prev" title="SSE技术">
+      <i class="fa fa-chevron-left"></i> SSE技术
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%A1%88%E4%B8%80%EF%BC%9AISUP%E5%8D%8F%E8%AE%AE"><span class="nav-text">方案一：ISUP协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%A1%88%E4%BA%8C%EF%BC%9A%E8%90%A4%E7%9F%B3%E4%BA%91%E5%B9%B3%E5%8F%B0"><span class="nav-text">方案二：萤石云平台</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%A1%88%E4%B8%89%EF%BC%9A%E7%BB%BC%E5%90%88%E5%AE%89%E9%98%B2%E7%AE%A1%E7%90%86%E5%B9%B3%E5%8F%B0"><span class="nav-text">方案三：综合安防管理平台</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="西北风炖豆腐"
+      src="/uploads/avatar.png">
+  <p class="site-author-name" itemprop="name">西北风炖豆腐</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">西北风炖豆腐</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
