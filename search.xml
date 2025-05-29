@@ -70,6 +70,21 @@
       </tags>
   </entry>
   <entry>
+    <title>Nginx-常用命令</title>
+    <url>/2021/10/11/Nginx-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
+    <content><![CDATA[<h2 id="Windows下彻底关闭Nginx服务"><a href="#Windows下彻底关闭Nginx服务" class="headerlink" title="Windows下彻底关闭Nginx服务"></a>Windows下彻底关闭Nginx服务</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">在nginx目录下打开cmd窗口，关闭Nginx服务，这样才能彻底关闭</span></span><br><span class="line">taskkill /f /t /im nginx.exe</span><br></pre></td></tr></table></figure>
+
+<h2 id="Linux下常用命令"><a href="#Linux下常用命令" class="headerlink" title="Linux下常用命令"></a>Linux下常用命令</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">启动nginx</span></span><br><span class="line">/usr/local/nginx/sbin/nginx</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">重载配置</span></span><br><span class="line">/usr/local/nginx/sbin/nginx -s reload</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">立即停止nginx</span></span><br><span class="line">/usr/local/nginx/sbin/nginx -s stop</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">平滑停止nginx</span></span><br><span class="line">/usr/local/nginx/sbin/nginx -s quit</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">nginx -h：查看帮助</span><br><span class="line"></span><br><span class="line">nginx -v：查看nginx的版本</span><br><span class="line">nginx -V：查看版本和nginx的配置选项</span><br><span class="line"></span><br><span class="line">nginx -t：测试配置文件的正确性</span><br><span class="line">nginx -T: 测试配置文件，并显示配置文件（这个命令可以快速查看配置文件）</span><br><span class="line">nginx -q：测试配置文件，但是只显示错误信息</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>Nginx</category>
+      </categories>
+      <tags>
+        <tag>Nginx</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Linux-常用命令</title>
     <url>/2021/10/11/Linux-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
     <content><![CDATA[<h2 id="端口开放："><a href="#端口开放：" class="headerlink" title="端口开放："></a>端口开放：</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看所有开放的端口：</span></span><br><span class="line">firewall-cmd --zone=public --list-ports</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看想开的端口是否已开</span></span><br><span class="line">firewall-cmd --query-port=22/tcp</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">添加指定需要开放的端口</span></span><br><span class="line">firewall-cmd --add-port=22/tcp --permanent</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">重载添加的端口</span></span><br><span class="line">firewall-cmd --reload</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">移除指定端口</span></span><br><span class="line">firewall-cmd --permanent --remove-port=22/tcp</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">示例：开放8080端口</span></span><br><span class="line">firewall-cmd --query-port=8080/tcp               # 首先查看端口是否已经开放</span><br><span class="line">firewall-cmd --add-port=8080/tcp --permanent     # 开放端口</span><br><span class="line">firewall-cmd --reload                            # 重载</span><br></pre></td></tr></table></figure>
@@ -97,6 +112,43 @@
       </categories>
       <tags>
         <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>location路径匹配与属性</title>
+    <url>/2024/10/17/location%E8%B7%AF%E5%BE%84%E5%8C%B9%E9%85%8D%E4%B8%8E%E5%B1%9E%E6%80%A7/</url>
+    <content><![CDATA[<h1 id="一、location-路径匹配"><a href="#一、location-路径匹配" class="headerlink" title="一、location-路径匹配"></a>一、location-路径匹配</h1><p><strong>优先级从上到下依次匹配：</strong></p>
+<ul>
+<li>&#x3D;       开头表示精准匹配；精准匹配，成功则会立即停止其他类型匹配；</li>
+<li>^~     开头表示uri以某个常规字符串开头，不是正则匹配，一般匹配目录（不区分大小写）；成功则会立即停止其他类型匹配；</li>
+<li>~       开头表示正则匹配（区分大小写），!~ 开头表示正则不匹配；多个正则匹配时，按出现的先后顺序，命中则停止；</li>
+<li>~*     开头表示正则匹配（不区分大小写），!~* 开头表示正则不匹配；多个正则匹配时，按出现的先后顺序，命中则停止；</li>
+<li>&#x2F;aaa 开头表示普通前缀匹配，命中最长的匹配，与顺序无关；成功会暂存，继续其他类型匹配；</li>
+<li>&#x2F;       通用匹配, 如果没有其它匹配,任何请求都会匹配到；</li>
+</ul>
+<p><strong>location 进行的是模糊匹配：</strong></p>
+<p>没有“&#x2F;”结尾时，location &#x2F;abc&#x2F;def 可以匹配 &#x2F;abc&#x2F;defghi 请求，也可以匹配 &#x2F;abc&#x2F;def&#x2F;ghi 等；</p>
+<p>有“&#x2F;”结尾时，location &#x2F;abc&#x2F;def&#x2F; 不能匹配 &#x2F;abc&#x2F;defghi 请求，只能匹配 &#x2F;abc&#x2F;def&#x2F;anything 这样的请求。</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="comment">#例子1 ^~ 匹配：</span></span><br><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">8080</span>;</span><br><span class="line">    <span class="attribute">server_name</span> website.com;</span><br><span class="line"></span><br><span class="line">    <span class="section">location</span> <span class="regexp">~ ^/doc[a-z]+</span> &#123;</span><br><span class="line">        <span class="attribute">return</span> <span class="number">701</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="section">location</span> <span class="regexp">~ ^/docu[a-z]+</span> &#123;</span><br><span class="line">        <span class="attribute">return</span> <span class="number">702</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># curl -I website.com:8080/document 返回 HTTP/1.1 701</span></span><br><span class="line"><span class="comment"># 说明：多个正则匹配时使用文件中的顺序，先匹配成功的返回。</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="comment">#例子2 普通前缀匹配：</span></span><br><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">server_name</span> website.com;</span><br><span class="line">    </span><br><span class="line">    <span class="section">location</span> /docu &#123;</span><br><span class="line">        <span class="attribute">return</span> <span class="number">701</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="section">location</span> /doc &#123;</span><br><span class="line">        <span class="attribute">return</span> <span class="number">702</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># curl -I website.com:8080/document 会返回 HTTP/1.1 701</span></span><br><span class="line"><span class="comment"># 说明：前缀匹配下，返回最长匹配的 location，与 location 所在位置顺序无关。</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="二、location-属性"><a href="#二、location-属性" class="headerlink" title="二、location-属性"></a>二、location-属性</h1><h2 id="root"><a href="#root" class="headerlink" title="root:"></a>root:</h2><p>location中root指定的只是相对路径，需要和路径结合起来映射地址；</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">location</span><span class="regexp"> ^~/static/</span> &#123;	<span class="comment">## 这里的root需要和路径结合使用，即是映射的文件位置为 /usr/alyingboy/static</span></span><br><span class="line">    <span class="attribute">root</span> /usr/alyingboy/; </span><br><span class="line">    <span class="attribute">index</span> index.html</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">#此时访问 IP/static/a.css ，那么就会找到 /usr/alyingboy/static/a.css</span></span><br><span class="line"><span class="comment">#如果定义的路径是文件夹，那么需要使用/结尾</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="alias"><a href="#alias" class="headerlink" title="alias:"></a>alias:</h2><p>alias指定的是绝对路径，不会和location中的路径结合使用，而是直接使用地址映射到文件;</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">location</span><span class="regexp"> ^~/static/</span> &#123;	<span class="comment">## 不会路径结合映射地址，那么这里就会直接映射到/usr/alyingboy/文件夹下的文件</span></span><br><span class="line">    <span class="attribute">alias</span> /usr/alyingboy/; </span><br><span class="line">    <span class="attribute">index</span> index.html</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">#如果定义的路径是文件夹，那么需要使用/结尾</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="proxy-pass"><a href="#proxy-pass" class="headerlink" title="proxy_pass:"></a>proxy_pass:</h2><p>在nginx中配置proxy_pass代理转发时，</p>
+<p>如果在proxy_pass后面的url加&#x2F;，表示绝对根路径；</p>
+<p>如果没有&#x2F;，表示相对路径，把匹配的路径部分也给代理走。</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line">假设下面四种情况分别用 http://192.168.1.1/proxy/test.<span class="attribute">html</span> 进行访问。</span><br><span class="line"></span><br><span class="line">第一种：location /proxy/ &#123;</span><br><span class="line">    <span class="attribute">proxy_pass</span> http://127.0.0.1/;</span><br><span class="line">&#125;</span><br><span class="line">代理到URL：http://127.0.0.1/test.<span class="attribute">html</span></span><br><span class="line"></span><br><span class="line">第二种（相对于第一种，最后少一个 / ）</span><br><span class="line">location /proxy/ &#123;</span><br><span class="line">    <span class="attribute">proxy_pass</span> http://127.0.0.1;</span><br><span class="line">&#125;</span><br><span class="line">代理到URL：http://127.0.0.1/proxy/test.<span class="attribute">html</span></span><br><span class="line"></span><br><span class="line">第三种：location /proxy/ &#123;</span><br><span class="line">    <span class="attribute">proxy_pass</span> http://127.0.0.1/aaa/;</span><br><span class="line">&#125;</span><br><span class="line">代理到URL：http://127.0.0.1/aaa/test.<span class="attribute">html</span></span><br><span class="line"></span><br><span class="line">第四种（相对于第三种，最后少一个 / ）</span><br><span class="line">location /proxy/ &#123;</span><br><span class="line">    <span class="attribute">proxy_pass</span> http://127.0.0.1/aaa;</span><br><span class="line">&#125;</span><br><span class="line">代理到URL：http://127.0.0.1/aaatest.html</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Nginx</category>
+      </categories>
+      <tags>
+        <tag>Nginx</tag>
       </tags>
   </entry>
   <entry>
@@ -128,23 +180,8 @@
         <category>其他</category>
       </categories>
       <tags>
+        <tag>Nginx</tag>
         <tag>服务器消息推送</tag>
-        <tag>Nginx</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Nginx-常用命令</title>
-    <url>/2021/10/11/Nginx-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
-    <content><![CDATA[<h2 id="Windows下彻底关闭Nginx服务"><a href="#Windows下彻底关闭Nginx服务" class="headerlink" title="Windows下彻底关闭Nginx服务"></a>Windows下彻底关闭Nginx服务</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">在nginx目录下打开cmd窗口，关闭Nginx服务，这样才能彻底关闭</span></span><br><span class="line">taskkill /f /t /im nginx.exe</span><br></pre></td></tr></table></figure>
-
-<h2 id="Linux下常用命令"><a href="#Linux下常用命令" class="headerlink" title="Linux下常用命令"></a>Linux下常用命令</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">启动nginx</span></span><br><span class="line">/usr/local/nginx/sbin/nginx</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">重载配置</span></span><br><span class="line">/usr/local/nginx/sbin/nginx -s reload</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">立即停止nginx</span></span><br><span class="line">/usr/local/nginx/sbin/nginx -s stop</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">平滑停止nginx</span></span><br><span class="line">/usr/local/nginx/sbin/nginx -s quit</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">nginx -h：查看帮助</span><br><span class="line"></span><br><span class="line">nginx -v：查看nginx的版本</span><br><span class="line">nginx -V：查看版本和nginx的配置选项</span><br><span class="line"></span><br><span class="line">nginx -t：测试配置文件的正确性</span><br><span class="line">nginx -T: 测试配置文件，并显示配置文件（这个命令可以快速查看配置文件）</span><br><span class="line">nginx -q：测试配置文件，但是只显示错误信息</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>Nginx</category>
-      </categories>
-      <tags>
-        <tag>Nginx</tag>
       </tags>
   </entry>
   <entry>
@@ -163,7 +200,7 @@
 <td>新功能</td>
 </tr>
 <tr>
-<td>fix</td>
+<td>bug</td>
 <td>修复bug</td>
 </tr>
 <tr>
@@ -216,65 +253,6 @@
       </categories>
       <tags>
         <tag>GIT</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>location路径匹配与属性</title>
-    <url>/2024/10/17/location%E8%B7%AF%E5%BE%84%E5%8C%B9%E9%85%8D%E4%B8%8E%E5%B1%9E%E6%80%A7/</url>
-    <content><![CDATA[<h1 id="一、location-路径匹配"><a href="#一、location-路径匹配" class="headerlink" title="一、location-路径匹配"></a>一、location-路径匹配</h1><p><strong>优先级从上到下依次匹配：</strong></p>
-<ul>
-<li>&#x3D;       开头表示精准匹配；精准匹配，成功则会立即停止其他类型匹配；</li>
-<li>^~     开头表示uri以某个常规字符串开头，不是正则匹配，一般匹配目录（不区分大小写）；成功则会立即停止其他类型匹配；</li>
-<li>~       开头表示正则匹配（区分大小写），!~ 开头表示正则不匹配；多个正则匹配时，按出现的先后顺序，命中则停止；</li>
-<li>~*     开头表示正则匹配（不区分大小写），!~* 开头表示正则不匹配；多个正则匹配时，按出现的先后顺序，命中则停止；</li>
-<li>&#x2F;aaa 开头表示普通前缀匹配，命中最长的匹配，与顺序无关；成功会暂存，继续其他类型匹配；</li>
-<li>&#x2F;       通用匹配, 如果没有其它匹配,任何请求都会匹配到；</li>
-</ul>
-<p><strong>location 进行的是模糊匹配：</strong></p>
-<p>没有“&#x2F;”结尾时，location &#x2F;abc&#x2F;def 可以匹配 &#x2F;abc&#x2F;defghi 请求，也可以匹配 &#x2F;abc&#x2F;def&#x2F;ghi 等；</p>
-<p>有“&#x2F;”结尾时，location &#x2F;abc&#x2F;def&#x2F; 不能匹配 &#x2F;abc&#x2F;defghi 请求，只能匹配 &#x2F;abc&#x2F;def&#x2F;anything 这样的请求。</p>
-<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="comment">#例子1 ^~ 匹配：</span></span><br><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">8080</span>;</span><br><span class="line">    <span class="attribute">server_name</span> website.com;</span><br><span class="line"></span><br><span class="line">    <span class="section">location</span> <span class="regexp">~ ^/doc[a-z]+</span> &#123;</span><br><span class="line">        <span class="attribute">return</span> <span class="number">701</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="section">location</span> <span class="regexp">~ ^/docu[a-z]+</span> &#123;</span><br><span class="line">        <span class="attribute">return</span> <span class="number">702</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># curl -I website.com:8080/document 返回 HTTP/1.1 701</span></span><br><span class="line"><span class="comment"># 说明：多个正则匹配时使用文件中的顺序，先匹配成功的返回。</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="comment">#例子2 普通前缀匹配：</span></span><br><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">server_name</span> website.com;</span><br><span class="line">    </span><br><span class="line">    <span class="section">location</span> /docu &#123;</span><br><span class="line">        <span class="attribute">return</span> <span class="number">701</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="section">location</span> /doc &#123;</span><br><span class="line">        <span class="attribute">return</span> <span class="number">702</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># curl -I website.com:8080/document 会返回 HTTP/1.1 701</span></span><br><span class="line"><span class="comment"># 说明：前缀匹配下，返回最长匹配的 location，与 location 所在位置顺序无关。</span></span><br></pre></td></tr></table></figure>
-
-<h1 id="二、location-属性"><a href="#二、location-属性" class="headerlink" title="二、location-属性"></a>二、location-属性</h1><h2 id="root"><a href="#root" class="headerlink" title="root:"></a>root:</h2><p>location中root指定的只是相对路径，需要和路径结合起来映射地址；</p>
-<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">location</span><span class="regexp"> ^~/static/</span> &#123;	<span class="comment">## 这里的root需要和路径结合使用，即是映射的文件位置为 /usr/alyingboy/static</span></span><br><span class="line">    <span class="attribute">root</span> /usr/alyingboy/; </span><br><span class="line">    <span class="attribute">index</span> index.html</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">#此时访问 IP/static/a.css ，那么就会找到 /usr/alyingboy/static/a.css</span></span><br><span class="line"><span class="comment">#如果定义的路径是文件夹，那么需要使用/结尾</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="alias"><a href="#alias" class="headerlink" title="alias:"></a>alias:</h2><p>alias指定的是绝对路径，不会和location中的路径结合使用，而是直接使用地址映射到文件;</p>
-<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">location</span><span class="regexp"> ^~/static/</span> &#123;	<span class="comment">## 不会路径结合映射地址，那么这里就会直接映射到/usr/alyingboy/文件夹下的文件</span></span><br><span class="line">    <span class="attribute">alias</span> /usr/alyingboy/; </span><br><span class="line">    <span class="attribute">index</span> index.html</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">#如果定义的路径是文件夹，那么需要使用/结尾</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="proxy-pass"><a href="#proxy-pass" class="headerlink" title="proxy_pass:"></a>proxy_pass:</h2><p>在nginx中配置proxy_pass代理转发时，</p>
-<p>如果在proxy_pass后面的url加&#x2F;，表示绝对根路径；</p>
-<p>如果没有&#x2F;，表示相对路径，把匹配的路径部分也给代理走。</p>
-<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line">假设下面四种情况分别用 http://192.168.1.1/proxy/test.<span class="attribute">html</span> 进行访问。</span><br><span class="line"></span><br><span class="line">第一种：location /proxy/ &#123;</span><br><span class="line">    <span class="attribute">proxy_pass</span> http://127.0.0.1/;</span><br><span class="line">&#125;</span><br><span class="line">代理到URL：http://127.0.0.1/test.<span class="attribute">html</span></span><br><span class="line"></span><br><span class="line">第二种（相对于第一种，最后少一个 / ）</span><br><span class="line">location /proxy/ &#123;</span><br><span class="line">    <span class="attribute">proxy_pass</span> http://127.0.0.1;</span><br><span class="line">&#125;</span><br><span class="line">代理到URL：http://127.0.0.1/proxy/test.<span class="attribute">html</span></span><br><span class="line"></span><br><span class="line">第三种：location /proxy/ &#123;</span><br><span class="line">    <span class="attribute">proxy_pass</span> http://127.0.0.1/aaa/;</span><br><span class="line">&#125;</span><br><span class="line">代理到URL：http://127.0.0.1/aaa/test.<span class="attribute">html</span></span><br><span class="line"></span><br><span class="line">第四种（相对于第三种，最后少一个 / ）</span><br><span class="line">location /proxy/ &#123;</span><br><span class="line">    <span class="attribute">proxy_pass</span> http://127.0.0.1/aaa;</span><br><span class="line">&#125;</span><br><span class="line">代理到URL：http://127.0.0.1/aaatest.html</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Nginx</category>
-      </categories>
-      <tags>
-        <tag>Nginx</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>代码耗时统计</title>
-    <url>/2021/10/10/%E4%BB%A3%E7%A0%81%E8%80%97%E6%97%B6%E7%BB%9F%E8%AE%A1/</url>
-    <content><![CDATA[<h2 id="一、计算时间差："><a href="#一、计算时间差：" class="headerlink" title="一、计算时间差："></a>一、计算时间差：</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 方式一:</span></span><br><span class="line"><span class="comment">* 当前时间 - 开始时间 获得耗时时间</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="type">long</span> <span class="variable">startTime</span> <span class="operator">=</span> System.currentTimeMillis();</span><br><span class="line">System.out.println(<span class="string">&quot;执行耗时：&quot;</span> + (System.currentTimeMillis() - startTime) + <span class="string">&quot;ms&quot;</span>);</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 方式二</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="type">long</span> <span class="variable">startTime</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Date</span>().getTime();</span><br><span class="line">System.out.println(<span class="string">&quot;执行耗时：&quot;</span> + (<span class="keyword">new</span> <span class="title class_">Date</span>().getTime() - startTime) + <span class="string">&quot;ms&quot;</span>);</span><br></pre></td></tr></table></figure>
-
-<p>优点：使用简单，只是估算一下耗时的话用这种就可以。</p>
-<p>缺点：如果分析一段代码中多个节点耗时的话，结构不清晰。</p>
-<h2 id="二、工具类StopWatch："><a href="#二、工具类StopWatch：" class="headerlink" title="二、工具类StopWatch："></a>二、工具类StopWatch：</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">StopWatch</span> <span class="variable">sw</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StopWatch</span>();</span><br><span class="line"></span><br><span class="line">sw.start(<span class="string">&quot;业务一&quot;</span>);</span><br><span class="line"><span class="comment">//业务代码...</span></span><br><span class="line">sw.stop();</span><br><span class="line"></span><br><span class="line">sw.start(<span class="string">&quot;业务二&quot;</span>);</span><br><span class="line"><span class="comment">//业务代码...</span></span><br><span class="line">sw.stop();</span><br></pre></td></tr></table></figure>
-
-<p>StopWatch其他方法：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">StopWatch</span> <span class="variable">sw</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StopWatch</span>();</span><br><span class="line"></span><br><span class="line">sw.start(<span class="string">&quot;开始任务&quot;</span>);</span><br><span class="line">sw.stop();</span><br><span class="line"></span><br><span class="line"><span class="comment">//美化打印输出</span></span><br><span class="line">System.out.println(sw.prettyPrint());  </span><br><span class="line"><span class="comment">//总时间 ms</span></span><br><span class="line">System.out.println(sw.getTotalTimeMillis());  </span><br><span class="line"><span class="comment">//最后一个 任务名称</span></span><br><span class="line">System.out.println(sw.getLastTaskName());  </span><br><span class="line"><span class="comment">//最后一个 任务信息</span></span><br><span class="line">System.out.println(sw.getLastTaskInfo());  </span><br><span class="line"><span class="comment">//任务总数</span></span><br><span class="line">System.out.println(sw.getTaskCount());</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>工具类</category>
-      </categories>
-      <tags>
-        <tag>java</tag>
-        <tag>工具类</tag>
       </tags>
   </entry>
   <entry>
@@ -341,6 +319,28 @@
         <tag>摄像头</tag>
         <tag>视频监控</tag>
         <tag>流媒体服务</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>代码耗时统计</title>
+    <url>/2021/10/10/%E4%BB%A3%E7%A0%81%E8%80%97%E6%97%B6%E7%BB%9F%E8%AE%A1/</url>
+    <content><![CDATA[<h2 id="一、计算时间差："><a href="#一、计算时间差：" class="headerlink" title="一、计算时间差："></a>一、计算时间差：</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 方式一:</span></span><br><span class="line"><span class="comment">* 当前时间 - 开始时间 获得耗时时间</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="type">long</span> <span class="variable">startTime</span> <span class="operator">=</span> System.currentTimeMillis();</span><br><span class="line">System.out.println(<span class="string">&quot;执行耗时：&quot;</span> + (System.currentTimeMillis() - startTime) + <span class="string">&quot;ms&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 方式二</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="type">long</span> <span class="variable">startTime</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Date</span>().getTime();</span><br><span class="line">System.out.println(<span class="string">&quot;执行耗时：&quot;</span> + (<span class="keyword">new</span> <span class="title class_">Date</span>().getTime() - startTime) + <span class="string">&quot;ms&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>优点：使用简单，只是估算一下耗时的话用这种就可以。</p>
+<p>缺点：如果分析一段代码中多个节点耗时的话，结构不清晰。</p>
+<h2 id="二、工具类StopWatch："><a href="#二、工具类StopWatch：" class="headerlink" title="二、工具类StopWatch："></a>二、工具类StopWatch：</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">StopWatch</span> <span class="variable">sw</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StopWatch</span>();</span><br><span class="line"></span><br><span class="line">sw.start(<span class="string">&quot;业务一&quot;</span>);</span><br><span class="line"><span class="comment">//业务代码...</span></span><br><span class="line">sw.stop();</span><br><span class="line"></span><br><span class="line">sw.start(<span class="string">&quot;业务二&quot;</span>);</span><br><span class="line"><span class="comment">//业务代码...</span></span><br><span class="line">sw.stop();</span><br></pre></td></tr></table></figure>
+
+<p>StopWatch其他方法：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">StopWatch</span> <span class="variable">sw</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StopWatch</span>();</span><br><span class="line"></span><br><span class="line">sw.start(<span class="string">&quot;开始任务&quot;</span>);</span><br><span class="line">sw.stop();</span><br><span class="line"></span><br><span class="line"><span class="comment">//美化打印输出</span></span><br><span class="line">System.out.println(sw.prettyPrint());  </span><br><span class="line"><span class="comment">//总时间 ms</span></span><br><span class="line">System.out.println(sw.getTotalTimeMillis());  </span><br><span class="line"><span class="comment">//最后一个 任务名称</span></span><br><span class="line">System.out.println(sw.getLastTaskName());  </span><br><span class="line"><span class="comment">//最后一个 任务信息</span></span><br><span class="line">System.out.println(sw.getLastTaskInfo());  </span><br><span class="line"><span class="comment">//任务总数</span></span><br><span class="line">System.out.println(sw.getTaskCount());</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>工具类</category>
+      </categories>
+      <tags>
+        <tag>java</tag>
+        <tag>工具类</tag>
       </tags>
   </entry>
   <entry>
