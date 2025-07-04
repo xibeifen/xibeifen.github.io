@@ -1,6 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Linux-常用命令</title>
+    <url>/2021/10/11/Linux-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
+    <content><![CDATA[<h2 id="端口开放："><a href="#端口开放：" class="headerlink" title="端口开放："></a>端口开放：</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看所有开放的端口：</span></span><br><span class="line">firewall-cmd --zone=public --list-ports</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看想开的端口是否已开</span></span><br><span class="line">firewall-cmd --query-port=22/tcp</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">添加指定需要开放的端口</span></span><br><span class="line">firewall-cmd --add-port=22/tcp --permanent</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">重载添加的端口</span></span><br><span class="line">firewall-cmd --reload</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">移除指定端口</span></span><br><span class="line">firewall-cmd --permanent --remove-port=22/tcp</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">示例：开放8080端口</span></span><br><span class="line">firewall-cmd --query-port=8080/tcp               # 首先查看端口是否已经开放</span><br><span class="line">firewall-cmd --add-port=8080/tcp --permanent     # 开放端口</span><br><span class="line">firewall-cmd --reload                            # 重载</span><br></pre></td></tr></table></figure>
+
+<h2 id="防火墙："><a href="#防火墙：" class="headerlink" title="防火墙："></a>防火墙：</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看防火墙状态</span></span><br><span class="line">systemctl status firewalld</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">开启防火墙</span></span><br><span class="line">systemctl start firewalld</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">开启防火墙</span></span><br><span class="line">service firewalld start</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">关闭防火墙</span></span><br><span class="line">systemctl stop firewalld</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">若遇到无法开启</span></span><br><span class="line">systemctl unmask firewalld.service</span><br><span class="line">systemctl start firewalld.service</span><br></pre></td></tr></table></figure>
+
+<h2 id="vim文本编辑："><a href="#vim文本编辑：" class="headerlink" title="vim文本编辑："></a>vim文本编辑：</h2><p>vim 共分为三种模式，<strong>命令模式、输入模式和底线命令行模式</strong>。</p>
+<h3 id="命令模式"><a href="#命令模式" class="headerlink" title="命令模式"></a>命令模式</h3><p>提供一些基本的命令，更多的命令需要使用底线命令行模式。</p>
+<p><strong>刚进入vim时，就是命令模式。</strong></p>
+<ul>
+<li><p>从输入模式切换到命令模式：按ESC就可以从输入模式跳转为命令模式。</p>
+</li>
+<li><p>从底线命令行模式切换到命令模式：删除你输入的命令和冒号，再按ESC。</p>
+</li>
+<li><p><strong>i</strong> – 切换到输入模式，在光标当前位置开始输入文本。</p>
+</li>
+<li><p><strong>:</strong> – 切换到底线命令行模式，以在最底一行输入命令。</p>
+</li>
+</ul>
+<h3 id="输入模式"><a href="#输入模式" class="headerlink" title="输入模式"></a>输入模式</h3><h3 id="底线命令行模式"><a href="#底线命令行模式" class="headerlink" title="底线命令行模式"></a>底线命令行模式</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">搜索未注释和不空的行：</span></span><br><span class="line">grep -Ev &quot;^#|^$&quot; xxx.conf</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Java8中stream流用法</title>
     <url>/2022/03/10/Java8%E4%B8%ADstream%E6%B5%81%E7%94%A8%E6%B3%95/</url>
     <content><![CDATA[<h2 id="一、流的创建操作"><a href="#一、流的创建操作" class="headerlink" title="一、流的创建操作"></a>一、流的创建操作</h2><ol>
@@ -70,33 +100,18 @@
       </tags>
   </entry>
   <entry>
-    <title>Linux-常用命令</title>
-    <url>/2021/10/11/Linux-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
-    <content><![CDATA[<h2 id="端口开放："><a href="#端口开放：" class="headerlink" title="端口开放："></a>端口开放：</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看所有开放的端口：</span></span><br><span class="line">firewall-cmd --zone=public --list-ports</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看想开的端口是否已开</span></span><br><span class="line">firewall-cmd --query-port=22/tcp</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">添加指定需要开放的端口</span></span><br><span class="line">firewall-cmd --add-port=22/tcp --permanent</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">重载添加的端口</span></span><br><span class="line">firewall-cmd --reload</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">移除指定端口</span></span><br><span class="line">firewall-cmd --permanent --remove-port=22/tcp</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">示例：开放8080端口</span></span><br><span class="line">firewall-cmd --query-port=8080/tcp               # 首先查看端口是否已经开放</span><br><span class="line">firewall-cmd --add-port=8080/tcp --permanent     # 开放端口</span><br><span class="line">firewall-cmd --reload                            # 重载</span><br></pre></td></tr></table></figure>
+    <title>Nginx-常用命令</title>
+    <url>/2021/10/11/Nginx-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
+    <content><![CDATA[<h2 id="Windows下彻底关闭Nginx服务"><a href="#Windows下彻底关闭Nginx服务" class="headerlink" title="Windows下彻底关闭Nginx服务"></a>Windows下彻底关闭Nginx服务</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">在nginx目录下打开cmd窗口，关闭Nginx服务，这样才能彻底关闭</span></span><br><span class="line">taskkill /f /t /im nginx.exe</span><br></pre></td></tr></table></figure>
 
-<h2 id="防火墙："><a href="#防火墙：" class="headerlink" title="防火墙："></a>防火墙：</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看防火墙状态</span></span><br><span class="line">systemctl status firewalld</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">开启防火墙</span></span><br><span class="line">systemctl start firewalld</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">开启防火墙</span></span><br><span class="line">service firewalld start</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">关闭防火墙</span></span><br><span class="line">systemctl stop firewalld</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">若遇到无法开启</span></span><br><span class="line">systemctl unmask firewalld.service</span><br><span class="line">systemctl start firewalld.service</span><br></pre></td></tr></table></figure>
-
-<h2 id="vim文本编辑："><a href="#vim文本编辑：" class="headerlink" title="vim文本编辑："></a>vim文本编辑：</h2><p>vim 共分为三种模式，<strong>命令模式、输入模式和底线命令行模式</strong>。</p>
-<h3 id="命令模式"><a href="#命令模式" class="headerlink" title="命令模式"></a>命令模式</h3><p>提供一些基本的命令，更多的命令需要使用底线命令行模式。</p>
-<p><strong>刚进入vim时，就是命令模式。</strong></p>
-<ul>
-<li><p>从输入模式切换到命令模式：按ESC就可以从输入模式跳转为命令模式。</p>
-</li>
-<li><p>从底线命令行模式切换到命令模式：删除你输入的命令和冒号，再按ESC。</p>
-</li>
-<li><p><strong>i</strong> – 切换到输入模式，在光标当前位置开始输入文本。</p>
-</li>
-<li><p><strong>:</strong> – 切换到底线命令行模式，以在最底一行输入命令。</p>
-</li>
-</ul>
-<h3 id="输入模式"><a href="#输入模式" class="headerlink" title="输入模式"></a>输入模式</h3><h3 id="底线命令行模式"><a href="#底线命令行模式" class="headerlink" title="底线命令行模式"></a>底线命令行模式</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">搜索未注释和不空的行：</span></span><br><span class="line">grep -Ev &quot;^#|^$&quot; xxx.conf</span><br></pre></td></tr></table></figure>
+<h2 id="Linux下常用命令"><a href="#Linux下常用命令" class="headerlink" title="Linux下常用命令"></a>Linux下常用命令</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">启动nginx</span></span><br><span class="line">/usr/local/nginx/sbin/nginx</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">重载配置</span></span><br><span class="line">/usr/local/nginx/sbin/nginx -s reload</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">立即停止nginx</span></span><br><span class="line">/usr/local/nginx/sbin/nginx -s stop</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">平滑停止nginx</span></span><br><span class="line">/usr/local/nginx/sbin/nginx -s quit</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">nginx -h：查看帮助</span><br><span class="line"></span><br><span class="line">nginx -v：查看nginx的版本</span><br><span class="line">nginx -V：查看版本和nginx的配置选项</span><br><span class="line"></span><br><span class="line">nginx -t：测试配置文件的正确性</span><br><span class="line">nginx -T: 测试配置文件，并显示配置文件（这个命令可以快速查看配置文件）</span><br><span class="line">nginx -q：测试配置文件，但是只显示错误信息</span><br></pre></td></tr></table></figure>
 
 ]]></content>
       <categories>
-        <category>Linux</category>
+        <category>Nginx</category>
       </categories>
       <tags>
-        <tag>Linux</tag>
+        <tag>Nginx</tag>
       </tags>
   </entry>
   <entry>
@@ -173,13 +188,15 @@
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 以下代码放在你的定时任务中,15~60秒执行一次(定时任务部分不再赘述)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">sseEndpoint</span><span class="params">(String messageId)</span> &#123;</span><br><span class="line">    SseUtil.sendMessage(messageId, <span class="string">&quot;: heartbeat\n\n&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p><strong>注意：</strong>Linux通常还有<strong>系统级TCP保活</strong>，默认为2小时，net.ipv4.tcp_keepalive_time &#x3D; 7200，它会检测空闲连接是否存活，超时后关闭死连接，如果影响到你的“永久”连接，需要将它设置为更长时间。</p>
+<p>参考：</p>
+<p>[<a href="https://blog.csdn.net/qq_42402854/article/details/130932936]">https://blog.csdn.net/qq_42402854/article/details/130932936]</a>: </p>
 ]]></content>
       <categories>
         <category>工具</category>
       </categories>
       <tags>
-        <tag>服务器消息推送</tag>
         <tag>Nginx</tag>
+        <tag>服务器消息推送</tag>
         <tag>长连接</tag>
         <tag>java</tag>
       </tags>
@@ -255,21 +272,6 @@
       </categories>
       <tags>
         <tag>GIT</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Nginx-常用命令</title>
-    <url>/2021/10/11/Nginx-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
-    <content><![CDATA[<h2 id="Windows下彻底关闭Nginx服务"><a href="#Windows下彻底关闭Nginx服务" class="headerlink" title="Windows下彻底关闭Nginx服务"></a>Windows下彻底关闭Nginx服务</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">在nginx目录下打开cmd窗口，关闭Nginx服务，这样才能彻底关闭</span></span><br><span class="line">taskkill /f /t /im nginx.exe</span><br></pre></td></tr></table></figure>
-
-<h2 id="Linux下常用命令"><a href="#Linux下常用命令" class="headerlink" title="Linux下常用命令"></a>Linux下常用命令</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">启动nginx</span></span><br><span class="line">/usr/local/nginx/sbin/nginx</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">重载配置</span></span><br><span class="line">/usr/local/nginx/sbin/nginx -s reload</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">立即停止nginx</span></span><br><span class="line">/usr/local/nginx/sbin/nginx -s stop</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">平滑停止nginx</span></span><br><span class="line">/usr/local/nginx/sbin/nginx -s quit</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">nginx -h：查看帮助</span><br><span class="line"></span><br><span class="line">nginx -v：查看nginx的版本</span><br><span class="line">nginx -V：查看版本和nginx的配置选项</span><br><span class="line"></span><br><span class="line">nginx -t：测试配置文件的正确性</span><br><span class="line">nginx -T: 测试配置文件，并显示配置文件（这个命令可以快速查看配置文件）</span><br><span class="line">nginx -q：测试配置文件，但是只显示错误信息</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>Nginx</category>
-      </categories>
-      <tags>
-        <tag>Nginx</tag>
       </tags>
   </entry>
   <entry>
