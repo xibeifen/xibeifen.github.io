@@ -313,7 +313,7 @@
 <p><strong>心跳频率的选择</strong>：小于Nginx的<code>proxy_read_timeout</code>即可，例如<strong>15~60秒</strong>一次。</p>
 <p>SSE允许发送无实际数据的<strong>注释行</strong>（以<code>:</code>开头的行，客户端会忽略），非常适合作为心跳信号。</p>
 <p>示例：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 以下代码放在你的定时任务中,15~60秒执行一次(定时任务部分不再赘述)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">sseEndpoint</span><span class="params">()</span> &#123;</span><br><span class="line">    SseUtil.batchAllSendMessage(<span class="string">&quot;: heartbeat\n\n&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 以下代码放在你的定时任务中,15~60秒执行一次(定时任务部分不再赘述)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">sseEndpoint</span><span class="params">()</span> &#123;</span><br><span class="line">    SseUtil.batchAllSendMessage(<span class="string">&quot;: heartbeat&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p><strong>注意：</strong>Linux通常还有<strong>系统级TCP保活</strong>，默认为2小时，net.ipv4.tcp_keepalive_time &#x3D; 7200，它会检测空闲连接是否存活，超时后关闭死连接，如果影响到你的“永久”连接，需要将它设置为更长时间。</p>
 <p>参考：</p>
